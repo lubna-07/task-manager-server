@@ -208,16 +208,17 @@ export const getTasks = async (req, res) => {
       query.stage = stage;
     }
 
-    if(!isAdmin){
-      query.team = { $all: [userId] }
-    }
-
-    let queryResult = Task.find(query)
+    let queryResult = await Task.find(query)
       .populate({
         path: "team",
         select: "name title email",
       })
       .sort({ _id: -1 });
+
+      const newQuery = query;
+      if(!isAdmin){
+        newQuery.team = { $all: [userId] }
+      }
 
       const allTasks = isAdmin
       ? await Task.find(query)
@@ -226,17 +227,14 @@ export const getTasks = async (req, res) => {
             select: "name title email",
           })
           .sort({ _id: -1 })
-      : await Task.find(query)
+      : await Task.find(newQuery)
           .populate({
             path: "team",
             select: "name title email",
           })
           .sort({ _id: -1 });
 
-          console.log(allTasks)
-
-    const tasks = queryResult;
-
+    const tasks = allTasks;
     res.status(200).json({
       status: true,
       tasks,
