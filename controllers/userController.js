@@ -82,6 +82,7 @@ export const loginUser = async (req, res) => {
 
 export const logoutUser = async (req, res) => {
   try {
+    console.log("Clearing the token")
     res.cookie("token", "", {
       htttpOnly: true,
       expires: new Date(0),
