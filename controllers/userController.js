@@ -45,9 +45,9 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-
+    console.log("email",email)
     const user = await User.findOne({ email });
-
+    console.log("user", user)
     if (!user) {
       return res
         .status(401)
@@ -62,7 +62,7 @@ export const loginUser = async (req, res) => {
     }
 
     const isMatch = await user.matchPassword(password);
-
+    console.log("is match", isMatch)
     if (user && isMatch) {
       createJWT(res, user._id);
 

@@ -235,7 +235,7 @@ export const getTasks = async (req, res) => {
 
           console.log(allTasks)
 
-    const tasks = allTasks;
+    const tasks = queryResult;
 
     res.status(200).json({
       status: true,
